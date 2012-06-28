@@ -1,0 +1,38 @@
+{
+    "name": "ICANS/LoggingComponent",
+    "type": "library",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/ICANS/IcansLoggingComponent"
+        }
+    ],
+    "description": "LoggingBundle for Flume and AMQP",
+    "keywords": ["bundle", "logging"],
+    "homepage": "https://github.com/ICANS",
+    "license": "BSD 3-Clause",
+    "authors": [
+        {
+            "name": "Mike Lohmann",
+            "email": "mike.lohmann@icans-gmbh.com"
+        },
+        {
+            "name": "Oliver Peymann",
+            "email": "oliver.peymann@icans-gmbh.com"
+        },
+        {
+            "name": "Malte Stenzel",
+            "email": "malte.stenzel@icans-gmbh.com"
+        },
+        {
+            "name": "Sebastian Pleschko",
+            "email": "sebastian.pleschko@icans-gmbh.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2"
+    },
+    "autoload": {
+        "psr-0": { "ICANS": "vendor/bundles/ICANS" }
+    }
+}
