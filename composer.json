@@ -1,0 +1,21 @@
+{
+    "name": "icans/logging-component",
+    "description": "ICANS Logging Component",
+    "authors": [
+        {
+            "name": "ICANS GmbH",
+            "homepage": "http://www.icans-gmbh.com"
+        }
+    ],
+    "require": {
+        "php":                                  ">=5.3.3",
+        "ebuzzing/thrift":                      "*",
+        "monolog/monolog":                      "*"
+    },
+    "target-dir": "Icans/Ecf/Component/Logging",
+    "autoload": {
+        "psr-0": {
+            "Icans\\Ecf\\Component\\Logging": ""
+        }
+    }
+}
