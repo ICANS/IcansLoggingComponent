@@ -9,8 +9,8 @@
     ],
     "require": {
         "php":                                  ">=5.3.3",
-        "ebuzzing/thrift":                      "*",
-        "monolog/monolog":                      "*"
+        "ebuzzing/thrift":                      "dev-master",
+        "monolog/monolog":                      "1.0.2"
     },
     "target-dir": "Icans/Ecf/Component/Logging",
     "autoload": {
