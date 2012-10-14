@@ -1,5 +1,6 @@
 {
     "name": "icans/logging-component",
+    "type": "symfony-bundle",
     "description": "ICANS Logging Component",
     "authors": [
         {
@@ -12,10 +13,10 @@
         "ebuzzing/thrift":                      "dev-master",
         "monolog/monolog":                      "1.0.2"
     },
-    "target-dir": "Icans/Ecf/Component/Logging",
+    "target-dir": "ICANS/Component/Logging",
     "autoload": {
         "psr-0": {
-            "Icans\\Ecf\\Component\\Logging": ""
+            "ICANS\\Component\\Logging": ""
         }
     }
 }
