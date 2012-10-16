@@ -11,12 +11,15 @@
     "require": {
         "php":                                  ">=5.3.3",
         "ebuzzing/thrift":                      "dev-master",
-        "monolog/monolog":                      "1.0.2"
+        "monolog/monolog":                      "1.0.*"
     },
-    "target-dir": "ICANS/Component/Logging",
+    "require-dev": {
+        "symfony/class-loader":                 "2.0.*"
+    },
+    "target-dir": "ICANS/Component/IcansLoggingComponent",
     "autoload": {
         "psr-0": {
-            "ICANS\\Component\\Logging": ""
+            "ICANS\\Component\\IcansLoggingComponent": ""
         }
     }
 }

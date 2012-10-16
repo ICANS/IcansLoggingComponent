@@ -8,7 +8,7 @@
  * @author    Mike Lohmann <mike.lohmann@icans-gmbh.com>
  * @copyright 2012 ICANS GmbH
  */
-namespace Icans\Ecf\Component\Logging;
+namespace ICANS\Component\IcansLoggingComponent;
 
 /**
  * This class defines the common methods needs to be implemented to provide the post processing.

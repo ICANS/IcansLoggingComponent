@@ -6,8 +6,9 @@
  * @author    Malte Stenzel
  * @copyright 2012 ICANS GmbH (http://www.icans-gmbh.com)
  */
-namespace ICANS\Component\IcansLoggingComponent\Filter;
+namespace ICANS\Component\IcansLoggingComponent\Tests\Filter;
 
+use ICANS\Component\IcansLoggingComponent\Filter\EmptyFilter;
 
 /**
  * Tests the EmptyFilter implementation used to check in a multi dimensional array for emptiness of a value for a given
