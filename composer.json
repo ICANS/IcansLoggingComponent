@@ -11,7 +11,7 @@
     "require": {
         "php":                                  ">=5.3.3",
         "ebuzzing/thrift":                      "dev-master",
-        "monolog/monolog":                      "1.0.2"
+        "monolog/monolog":                      "1.0.*"
     },
     "require-dev": {
         "symfony/class-loader":                 "2.0.*"
