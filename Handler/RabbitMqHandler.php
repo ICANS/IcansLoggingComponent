@@ -6,7 +6,7 @@
  * @author    Mike Lohmann
  * @copyright 2012 ICANS GmbH (http://www.icans-gmbh.com)
  */
-namespace ICANS\Bundle\IcansLoggingBundle\Handler;
+namespace ICANS\Component\IcansLoggingComponent\Handler;
 
 use ICANS\Component\IcansLoggingComponent\FilterInterface;
 use ICANS\Component\IcansLoggingComponent\AMQPMessageProducerInterface;

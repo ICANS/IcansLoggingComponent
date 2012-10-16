@@ -7,7 +7,7 @@
  */
 namespace ICANS\Bundle\IcansLoggingBundle\Tests\Handler;
 
-use ICANS\Bundle\IcansLoggingBundle\Handler\RabbitMqHandler;
+use ICANS\Component\IcansLoggingComponent\Handler\RabbitMqHandler;
 use ICANS\Component\IcansLoggingComponent\AMQPMessageProducerInterface;
 
 use Monolog\Formatter\FormatterInterface;
@@ -86,7 +86,7 @@ class RabbitMqHandlerTest extends \PHPUnit_Framework_TestCase
         ->with($testRecord)
         ->will($this->returnValue(array()));
 
-        $this->producerMock->expects($this->once())
+        $this->messageProducerMock->expects($this->once())
             ->method('publish')
             ->with(json_encode($testRecord), $this->routingKey, $testProperties);
 

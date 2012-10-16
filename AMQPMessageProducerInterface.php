@@ -18,23 +18,18 @@ namespace ICANS\Component\IcansLoggingComponent;
 interface AMQPMessageProducerInterface
 {
     /**
-     * This function adds some additional information to the 'extra' field
-     * in the logging body.
+     * This is copied from the OldSoundBundle\RabbitMq\Producer::publish definition.
+     * We put this in our own interface to be independent from the Bundle in our Component.
      *
-     * @param array $record The record created by monolog
+     * Perhaps there is a way to extract some of the implementation in the OldSoundRabbitMqBundle
+     * to a Component.
      *
-     * @return array
+     * Publishes the message and merges additional properties with basic properties
+     *
+     * @param string $msgBody
+     * @param string $routingKey
+     * @param array $additionalProperties
      */
-    public function processRecord(array $record);
-
-    /**
-     * Invoke magic method which is called by monolog
-     *
-     * @param array $record
-     *
-     * @return mixed
-     */
-    public function __invoke($record);
-
+    public function publish($msgBody, $routingKey = '', $additionalProperties = array());
 
 }

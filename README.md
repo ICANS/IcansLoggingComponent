@@ -42,7 +42,6 @@ $recordData = array('testdata' => 'test');
 //will write to the flume node
 $thriftFlumeProcessingHandler->write($recordData);
 
+RabbitMqHandler:
 
-Contribute:
-
-To
+<?php

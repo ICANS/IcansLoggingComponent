@@ -79,7 +79,6 @@ class ThriftFlumeProcessingHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $filterMock = $this->getMockBuilder('ICANS\Component\IcansLoggingComponent\FilterInterface')
             ->disableOriginalConstructor()
-            ->setMethods(array('isRecordToBeFiltered'))
             ->getMock();
 
         $filterMock->expects($this->once())
@@ -179,7 +178,6 @@ class ThriftFlumeProcessingHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $filterMock1 = $this->getMockBuilder('ICANS\Component\IcansLoggingComponent\FilterInterface')
             ->disableOriginalConstructor()
-            ->setMethods(array('isRecordToBeFiltered'))
             ->getMock();
 
         $filterMock1->expects($this->once())
@@ -188,7 +186,6 @@ class ThriftFlumeProcessingHandlerTest extends \PHPUnit_Framework_TestCase
 
         $filterMock2 = $this->getMockBuilder('ICANS\Component\IcansLoggingComponent\FilterInterface')
             ->disableOriginalConstructor()
-            ->setMethods(array('isRecordToBeFiltered'))
             ->getMock();
 
         $filterMock2->expects($this->once())
