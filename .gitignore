@@ -1,12 +1,5 @@
-# Bootstrap
-app/bootstrap*
+phpunit.xml
+Tests/autoload.php
+composer.lock
 
-# Symfony directories
 vendor/*
-*/logs/*
-*/cache/*
-web/uploads/*
-web/bundles/*
-
-# Configuration files
-app/config/parameters.ini

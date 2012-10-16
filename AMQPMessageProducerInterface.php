@@ -1,7 +1,6 @@
 <?php
 /**
- * This file contains the interface of the analytics post processor to append same data to different events you want
- * to log. It enriches the log body with some global request data.
+ * This file contains the interface needed to be implemented for a AMQPProducer.
  *
  * PHP Version 5.3
  *
@@ -11,12 +10,12 @@
 namespace ICANS\Component\IcansLoggingComponent;
 
 /**
- * This class defines the common methods needs to be implemented to provide the post processing.
+ * This class defines the interface needed for AMQPMessageProducers
  *
  * @author    Mike Lohmann <mike.lohmann@icans-gmbh.com>
  * @copyright 2011 ICANS GmbH
  */
-interface PostProcessorInterface
+interface AMQPMessageProducerInterface
 {
     /**
      * This function adds some additional information to the 'extra' field

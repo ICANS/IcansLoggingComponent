@@ -6,7 +6,7 @@
  * @copyright 2012 ICANS GmbH (http://www.icans-gmbh.com)
  * @version   $Id: $
  */
-namespace Icans\Ecf\Component\Logging;
+namespace ICANS\Component\IcansLoggingComponent;
 
 /**
  * A simple timer used to measure spent time during code execution.
