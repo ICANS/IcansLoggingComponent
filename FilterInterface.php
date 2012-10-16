@@ -7,7 +7,7 @@
  * @author    Mike Lohmann <mike.lohmann@icans-gmbh.com>
  * @copyright 2012 ICANS GmbH
  */
-namespace Icans\Ecf\Component\Logging;
+namespace ICANS\Component\IcansLoggingComponent;
 
 /**
  * This class defines the common methods needs to be implemented to filter out if event is processed
@@ -26,4 +26,12 @@ interface FilterInterface
      */
     public function isRecordToBeFiltered(array $record);
 
+    /**
+     * This function filters the record and return a filtered record
+     *
+     * @param array $record The record created by monolog
+     *
+     * @return array
+     */
+    public function filterRecord(array $record);
 }

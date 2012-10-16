@@ -6,7 +6,7 @@
  * @author    sebastian.pleschko
  * @copyright 2011 ICANS GmbH (http://www.icans-gmbh.com)
  */
-namespace Icans\Ecf\Component\Logging;
+namespace ICANS\Component\IcansLoggingComponent\Tests\Handler;
 
 use ICANS\Component\IcansLoggingComponent\FilterInterface;
 use ICANS\Component\IcansLoggingComponent\Flume\Server AS Flume;
@@ -26,9 +26,15 @@ use Thrift AS Thrift;
 class ThriftFlumeProcessingHandlerTest extends \PHPUnit_Framework_TestCase
 {
 
-    protected $flumeClientMock;
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    private $flumeClientMock;
 
-    protected $thriftTTransportMock;
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    private $thriftTTransportMock;
 
     /**
      * Set up the mocks
@@ -73,7 +79,6 @@ class ThriftFlumeProcessingHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $filterMock = $this->getMockBuilder('ICANS\Component\IcansLoggingComponent\FilterInterface')
             ->disableOriginalConstructor()
-            ->setMethods(array('isRecordToBeFiltered'))
             ->getMock();
 
         $filterMock->expects($this->once())
@@ -83,7 +88,7 @@ class ThriftFlumeProcessingHandlerTest extends \PHPUnit_Framework_TestCase
         $thriftFlumeProcessingHandler = new ThriftFlumeProcessingHandler($this->thriftTTransportMock,
             $this->flumeClientMock);
 
-        $thriftFlumeProcessingHandler->addFilter($filterMock);
+        $thriftFlumeProcessingHandler->addHandlingFilter($filterMock);
 
         $this->assertFalse($thriftFlumeProcessingHandler->isHandling(array()));
     }
@@ -169,11 +174,10 @@ class ThriftFlumeProcessingHandlerTest extends \PHPUnit_Framework_TestCase
     /**
      * Test if filters are taken into consideration
      */
-    public function testAddFilters()
+    public function testAddHandlingFilters()
     {
         $filterMock1 = $this->getMockBuilder('ICANS\Component\IcansLoggingComponent\FilterInterface')
             ->disableOriginalConstructor()
-            ->setMethods(array('isRecordToBeFiltered'))
             ->getMock();
 
         $filterMock1->expects($this->once())
@@ -182,7 +186,6 @@ class ThriftFlumeProcessingHandlerTest extends \PHPUnit_Framework_TestCase
 
         $filterMock2 = $this->getMockBuilder('ICANS\Component\IcansLoggingComponent\FilterInterface')
             ->disableOriginalConstructor()
-            ->setMethods(array('isRecordToBeFiltered'))
             ->getMock();
 
         $filterMock2->expects($this->once())
@@ -192,7 +195,7 @@ class ThriftFlumeProcessingHandlerTest extends \PHPUnit_Framework_TestCase
         $thriftFlumeProcessingHandler = new ThriftFlumeProcessingHandler($this->thriftTTransportMock,
             $this->flumeClientMock);
 
-        $thriftFlumeProcessingHandler->addFilters(array($filterMock1, $filterMock2));
+        $thriftFlumeProcessingHandler->addHandlingFilters(array($filterMock1, $filterMock2));
 
         // Inherently checks filter by calling isHanding
         $this->assertTrue($thriftFlumeProcessingHandler->isHandling(array('level' => Logger::ERROR)));

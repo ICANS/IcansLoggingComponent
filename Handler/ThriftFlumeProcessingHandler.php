@@ -12,9 +12,9 @@ use ICANS\Component\IcansLoggingComponent\FilterInterface;
 use ICANS\Component\IcansLoggingComponent\Flume\Priority;
 use ICANS\Component\IcansLoggingComponent\Flume\ThriftFlumeEvent;
 use ICANS\Component\IcansLoggingComponent\Flume\ThriftFlumeEventServerClient;
+use ICANS\Component\IcansLoggingComponent\HandlerInterface;
 
 use Monolog\Handler\AbstractProcessingHandler;
-
 use Monolog\Logger;
 
 use Thrift AS Thrift;
@@ -22,15 +22,20 @@ use Thrift AS Thrift;
 /**
  * FlumeHandler bridges log messages between monolog and flume
  */
-class ThriftFlumeProcessingHandler extends AbstractProcessingHandler
+class ThriftFlumeProcessingHandler extends AbstractProcessingHandler implements HandlerInterface
 {
     /**
      * @var array
      */
-    private $filters = array();
+    private $writeFilters = array();
 
     /**
-     * @var \ICANS\Component\IcansLoggingComponent\Flume\Server\ThriftFlumeEventServerClient
+     * @var array
+     */
+    private $handlingFilters = array();
+
+    /**
+     * @var ThriftFlumeEventServerClient
      */
     private $client;
 
@@ -75,8 +80,8 @@ class ThriftFlumeProcessingHandler extends AbstractProcessingHandler
             return false;
         }
 
-        if (!empty($this->filters)) {
-            foreach ($this->filters as $filter) {
+        if (!empty($this->handlingFilters)) {
+            foreach ($this->handlingFilters as $filter) {
                 if (true === $filter->isRecordToBeFiltered($record)) {
                     return false;
                 }
@@ -101,7 +106,6 @@ class ThriftFlumeProcessingHandler extends AbstractProcessingHandler
                 // regarding to log everything to flume aspect
                 // @todo there should be an external monitoring of this flume-zombie-state which should trigger warnings
                 // in zabbix and kick the app-server out of the loadbalancer
-                // the admins are aware of the fact and the solution is currently beeing discussed
                 $this->handlingStopped = true;
                 unset($this->client);
             }
@@ -110,10 +114,17 @@ class ThriftFlumeProcessingHandler extends AbstractProcessingHandler
 
 
     /**
-     * Matches the Monolog loglevel to the corresponding flume equivalent
+     * Matches the Monolog loglevel to the corresponding flume equivalent. Can be used to set
+     * the priority of the FlumeEvent. For example if you extend this handler you could overwrite
+     * the write method and add the priority to the FlumeEvent:
      *
-     * @todo this method is nowhere used, is this a bug? (does the priority/level needs this during handling and filtering?)
-     * @codeCoverageIgnore Until this is used, ignore in clover report
+     * $mappedLogLevel = $this->mapLoggerLogLevelToFlumePriority($record['message_loglevel_value']);
+     * $event = new Flume\ThriftFlumeEvent(array(
+     *                                          'priority' => $mappedLogLevel,
+     *                                          'timestamp' => $timestamp,
+     *                                          'host' => $hostName,
+     *                                          'body' => $record['formatted']
+     *                                          ));
      *
      * @param string $loglevel
      *
@@ -150,6 +161,14 @@ class ThriftFlumeProcessingHandler extends AbstractProcessingHandler
      */
     public function write(array $record)
     {
+        if (!empty($this->writeFilters)) {
+            foreach ($this->writeFilters as $filter) {
+                if (true === $filter->isRecordToBeFiltered($record)) {
+                    $record = $filter->filterRecord();
+                }
+            }
+        }
+
         $event = new ThriftFlumeEvent($record);
         $this->sendThriftFlumeEvent($event);
     }
@@ -167,7 +186,7 @@ class ThriftFlumeProcessingHandler extends AbstractProcessingHandler
     }
 
     /**
-     * @return bool
+     * {@inheritDoc}
      */
     public function isHandlingStopped()
     {
@@ -175,24 +194,38 @@ class ThriftFlumeProcessingHandler extends AbstractProcessingHandler
     }
 
     /**
-     * Adds an array of ICANS\Component\IcansLoggingComponent\FilterInterface to this Handler
-     *
-     * @param array $filters
+     * {@inheritDoc}
      */
-    public function addFilters(array $filters)
+    public function addWriteFilters(array $filters)
     {
         foreach ($filters as $filter) {
-            $this->addFilter($filter);
+            $this->addWriteFilter($filter);
         }
     }
 
     /**
-     * Add ICANS\Component\IcansLoggingComponent\FilterInterface to this Handler
-     *
-     * @param ICANS\Component\IcansLoggingComponent\FilterInterface $filter
+     * {@inheritDoc}
      */
-    public function addFilter(FilterInterface $filter)
+    public function addWriteFilter(FilterInterface $filter)
     {
-        $this->filters[] = $filter;
+        $this->writeFilters[] = $filter;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function addHandlingFilters(array $filters)
+    {
+        foreach ($filters as $filter) {
+            $this->addHandlingFilter($filter);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function addHandlingFilter(FilterInterface $filter)
+    {
+        $this->handlingFilters[] = $filter;
     }
 }
