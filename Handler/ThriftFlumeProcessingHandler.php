@@ -82,7 +82,7 @@ class ThriftFlumeProcessingHandler extends AbstractProcessingHandler implements 
 
         if (!empty($this->handlingFilters)) {
             foreach ($this->handlingFilters as $filter) {
-                if (true === $filter->isRecordToBeFiltered($record)) {
+                if (true === $filter->isRecordToBeHandled($record)) {
                     return false;
                 }
             }

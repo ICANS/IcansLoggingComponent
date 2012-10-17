@@ -24,6 +24,15 @@ interface FilterInterface
      *
      * @return Boolean
      */
+    public function isRecordToBeHandled(array $record);
+
+    /**
+     * This function filters the record to decide if record will be handled on write
+     *
+     * @param array $record The record created by monolog
+     *
+     * @return Boolean
+     */
     public function isRecordToBeFiltered(array $record);
 
     /**
