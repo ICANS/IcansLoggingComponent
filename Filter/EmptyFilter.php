@@ -34,7 +34,7 @@ class EmptyFilter implements FilterInterface
     /**
      * {@inheritDoc}
      */
-    public function isRecordToBeFiltered(array $record)
+    public function isRecordToBeHandled(array $record)
     {
         $workingKeys = $this->keys;
         while (($key = array_shift($workingKeys)) !== null) {
@@ -44,6 +44,14 @@ class EmptyFilter implements FilterInterface
             $record = $record[$key];
         }
         return empty($record);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isRecordToBeFiltered(array $record)
+    {
+        return false;
     }
 
     /**
