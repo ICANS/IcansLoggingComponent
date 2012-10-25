@@ -8,32 +8,20 @@
  */
 namespace ICANS\Component\IcansLoggingComponent\Handler;
 
-use ICANS\Component\IcansLoggingComponent\FilterInterface;
-use ICANS\Component\IcansLoggingComponent\AMQPMessageProducerInterface;
+use ICANS\Component\IcansLoggingComponent\Handler\AbstractHandler;
+use ICANS\Component\IcansLoggingComponent\Api\V1\AMQPMessageProducerInterface;
 
-use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Logger;
-
 
 /**
  * RabbitMqHandler class for sending event message to a rabbit mq instance
  */
-class RabbitMqHandler extends AbstractProcessingHandler
+class RabbitMqHandler extends AbstractHandler
 {
     /**
      * @var AMQPMessageProducerInterface
      */
     private $eventMessageProducer = null;
-
-    /**
-     * @var array
-     */
-    private $writeFilters;
-
-    /**
-     * @var array
-     */
-    private $handlingFilters;
 
     /**
      * @var string
@@ -49,7 +37,6 @@ class RabbitMqHandler extends AbstractProcessingHandler
      * Default constructor
      *
      * @param string $routingKey
-     * @param string $riakVNode
      * @param int $level The minimum logging level at which this handler will be triggered
      * @param bool $bubble Whether the messages that are handled can bubble up the stack or not
      */
@@ -85,7 +72,7 @@ class RabbitMqHandler extends AbstractProcessingHandler
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function write(array $record)
     {
@@ -115,10 +102,14 @@ class RabbitMqHandler extends AbstractProcessingHandler
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function isHandling(array $record)
     {
+        if (true === $this->isHandlingStopped()) {
+            return false;
+        }
+
         if (null === $this->getEventMessageProducer()) {
             return false;
         }
@@ -137,37 +128,9 @@ class RabbitMqHandler extends AbstractProcessingHandler
     /**
      * {@inheritDoc}
      */
-    public function addWriteFilters(array $filters)
+    public function close()
     {
-        foreach ($filters as $filter) {
-            $this->addWriteFilter($filter);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function addWriteFilter(FilterInterface $filter)
-    {
-        $this->writeFilters[] = $filter;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function addHandlingFilters(array $filters)
-    {
-        foreach ($filters as $filter) {
-            $this->addHandlingFilter($filter);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function addHandlingFilter(FilterInterface $filter)
-    {
-        $this->handlingFilters[] = $filter;
+        $this->handlingStopped = true;
     }
 
     /**

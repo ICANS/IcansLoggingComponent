@@ -7,12 +7,12 @@
  */
 namespace ICANS\Component\IcansLoggingComponent\Filter;
 
-use ICANS\Component\IcansLoggingComponent\FilterInterface;
+use ICANS\Component\IcansLoggingComponent\Api\V1\HandleFilterInterface;
 
 /**
  * Filters the record (array of arrays) if a specified value is empty.
  */
-class EmptyFilter implements FilterInterface
+class EmptyFilter implements HandleFilterInterface
 {
     /**
      * The key to lookup in the record
@@ -24,7 +24,7 @@ class EmptyFilter implements FilterInterface
     /**
      * Default constructor, $key specifies which array keys are used to find the value that should not be empty
      *
-     * @param array $key
+     * @param array $keys
      */
     public function __construct(array $keys = array())
     {
@@ -44,21 +44,5 @@ class EmptyFilter implements FilterInterface
             $record = $record[$key];
         }
         return empty($record);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function isRecordToBeFiltered(array $record)
-    {
-        return false;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function filterRecord(array $record)
-    {
-        return $record;
     }
 }
