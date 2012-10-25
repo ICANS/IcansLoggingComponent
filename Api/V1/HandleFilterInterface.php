@@ -7,7 +7,7 @@
  * @author    Mike Lohmann <mike.lohmann@icans-gmbh.com>
  * @copyright 2012 ICANS GmbH
  */
-namespace ICANS\Component\IcansLoggingComponent;
+namespace ICANS\Component\IcansLoggingComponent\Api\V1;
 
 /**
  * This class defines the common methods needs to be implemented to filter out if event is processed
@@ -15,7 +15,7 @@ namespace ICANS\Component\IcansLoggingComponent;
  * @author    Mike Lohmann <mike.lohmann@icans-gmbh.com>
  * @copyright 2011 ICANS GmbH
  */
-interface FilterInterface
+interface HandleFilterInterface
 {
     /**
      * This function filters the record to decide if record will be handled or not
@@ -25,22 +25,4 @@ interface FilterInterface
      * @return Boolean
      */
     public function isRecordToBeHandled(array $record);
-
-    /**
-     * This function filters the record to decide if record will be handled on write
-     *
-     * @param array $record The record created by monolog
-     *
-     * @return Boolean
-     */
-    public function isRecordToBeFiltered(array $record);
-
-    /**
-     * This function filters the record and return a filtered record
-     *
-     * @param array $record The record created by monolog
-     *
-     * @return array
-     */
-    public function filterRecord(array $record);
 }

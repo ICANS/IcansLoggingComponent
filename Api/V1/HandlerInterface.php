@@ -7,9 +7,10 @@
  * @author    Mike Lohmann <mike.lohmann@icans-gmbh.com>
  * @copyright 2012 ICANS GmbH
  */
-namespace ICANS\Component\IcansLoggingComponent;
+namespace ICANS\Component\IcansLoggingComponent\Api\V1;
 
-use ICANS\Component\IcansLoggingComponent\FilterInterface;
+use ICANS\Component\IcansLoggingComponent\Api\V1\WriteFilterInterface;
+use ICANS\Component\IcansLoggingComponent\Api\V1\HandleFilterInterface;
 
 /**
  * This class defines the methods needs to be implemented for an ICANS handler
@@ -20,14 +21,14 @@ use ICANS\Component\IcansLoggingComponent\FilterInterface;
 interface HandlerInterface
 {
     /**
-     * Adds an array of FilterInterfaces to a Handler.
+     * Adds an array of WriteFilterInterface to a Handler.
      *
-     * @param FilterInterface $filter
+     * @param WriteFilterInterface $filter
      */
-    public function addWriteFilter(FilterInterface $filter);
+    public function addWriteFilter(WriteFilterInterface $filter);
 
     /**
-     * Adds an array of FilterInterface to this Handler to filter out records during write.
+     * Adds an array of WriteFilterInterface to this Handler to filter out records during write.
      *
      * @param array $filters
      */
@@ -37,12 +38,12 @@ interface HandlerInterface
      * Handling filters are used to check if the handler should handle the record.
      * Add FilterInterface to a Handler.
      *
-     * @param FilterInterface $filter
+     * @param HandleFilterInterface $filter
      */
-    public function addHandlingFilter(FilterInterface $filter);
+    public function addHandlingFilter(HandleFilterInterface $filter);
 
     /**
-     * Adds an array of FilterInterfaces to a Handler.
+     * Adds an array of HandleFilterInterface to a Handler.
      *
      * @param array $filters
      */
