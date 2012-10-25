@@ -30,7 +30,7 @@ $thriftFlumeProcessingHandler = new ThriftFlumeProcessingHandler($thriftTranspor
 $formatter = new Monolog\Formatter\JsonFormatter();
 $thriftFlumeProcessingHandler->setFormatter($formatter);
 
-//the processor has to implement the ICANS\Component\IcansLoggingComponent\PostProcessorInterface
+//the processor has to implement the ICANS\Component\IcansLoggingComponent\Api\V1\PostProcessorInterface
 $processor = new myPostProcessor();
 $thriftFlumeProcessingHandler->pushProcessor($processor);
 

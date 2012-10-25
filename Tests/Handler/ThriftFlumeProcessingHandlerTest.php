@@ -8,7 +8,8 @@
  */
 namespace ICANS\Component\IcansLoggingComponent\Tests\Handler;
 
-use ICANS\Component\IcansLoggingComponent\FilterInterface;
+use ICANS\Component\IcansLoggingComponent\Api\V1\WriteFilterInterface;
+use ICANS\Component\IcansLoggingComponent\Api\V1\HandleFilterInterface;
 use ICANS\Component\IcansLoggingComponent\Flume\Server AS Flume;
 use ICANS\Component\IcansLoggingComponent\Handler\ThriftFlumeProcessingHandler;
 
@@ -77,12 +78,12 @@ class ThriftFlumeProcessingHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsHandlingFiltersFalse()
     {
-        $filterMock = $this->getMockBuilder('ICANS\Component\IcansLoggingComponent\FilterInterface')
+        $filterMock = $this->getMockBuilder('ICANS\Component\IcansLoggingComponent\Api\V1\HandleFilterInterface')
             ->disableOriginalConstructor()
             ->getMock();
 
         $filterMock->expects($this->once())
-            ->method('isRecordToBeFiltered')
+            ->method('isRecordToBeHandled')
             ->will($this->returnValue(true));
 
         $thriftFlumeProcessingHandler = new ThriftFlumeProcessingHandler($this->thriftTTransportMock,
@@ -176,20 +177,20 @@ class ThriftFlumeProcessingHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddHandlingFilters()
     {
-        $filterMock1 = $this->getMockBuilder('ICANS\Component\IcansLoggingComponent\FilterInterface')
+        $filterMock1 = $this->getMockBuilder('ICANS\Component\IcansLoggingComponent\Api\V1\HandleFilterInterface')
             ->disableOriginalConstructor()
             ->getMock();
 
         $filterMock1->expects($this->once())
-            ->method('isRecordToBeFiltered')
+            ->method('isRecordToBeHandled')
             ->will($this->returnValue(false));
 
-        $filterMock2 = $this->getMockBuilder('ICANS\Component\IcansLoggingComponent\FilterInterface')
+        $filterMock2 = $this->getMockBuilder('ICANS\Component\IcansLoggingComponent\Api\V1\HandleFilterInterface')
             ->disableOriginalConstructor()
             ->getMock();
 
         $filterMock2->expects($this->once())
-            ->method('isRecordToBeFiltered')
+            ->method('isRecordToBeHandled')
             ->will($this->returnValue(false));
 
         $thriftFlumeProcessingHandler = new ThriftFlumeProcessingHandler($this->thriftTTransportMock,
