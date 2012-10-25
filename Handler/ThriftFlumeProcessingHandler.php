@@ -8,13 +8,11 @@
  */
 namespace ICANS\Component\IcansLoggingComponent\Handler;
 
-use ICANS\Component\IcansLoggingComponent\FilterInterface;
+use ICANS\Component\IcansLoggingComponent\Handler\AbstractHandler;
 use ICANS\Component\IcansLoggingComponent\Flume\Priority;
 use ICANS\Component\IcansLoggingComponent\Flume\ThriftFlumeEvent;
 use ICANS\Component\IcansLoggingComponent\Flume\ThriftFlumeEventServerClient;
-use ICANS\Component\IcansLoggingComponent\HandlerInterface;
 
-use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Logger;
 
 use Thrift AS Thrift;
@@ -22,41 +20,29 @@ use Thrift AS Thrift;
 /**
  * FlumeHandler bridges log messages between monolog and flume
  */
-class ThriftFlumeProcessingHandler extends AbstractProcessingHandler implements HandlerInterface
+class ThriftFlumeProcessingHandler extends AbstractHandler
 {
-    /**
-     * @var array
-     */
-    private $writeFilters = array();
-
-    /**
-     * @var array
-     */
-    private $handlingFilters = array();
-
     /**
      * @var ThriftFlumeEventServerClient
      */
     private $client;
 
     /**
-     * Flag to enable the Handler to shut itself off on flume errors
-     * @var boolean
-     */
-    private $handlingStopped = false;
-
-    /**
      * Default constructor
      *
-     * @param integer     $level The minimum logging level at which this handler will be triggered
-     * @param Boolean     $bubble Whether the messages that are handled can bubble up the stack or not
-     * @param ThriftClientFactory $clientFactory The Factory from which we get out connection
+     * @param Thrift\Transport\TTransport   $flumeTransport
+     * @param ThriftFlumeEventServerClient  $client
+     * @param int                           $level The minimum logging level at which this handler will be triggered
+     * @param Boolean                       $bubble Whether the messages that are handled can bubble up the stack or not
      *
      * @SuppressWarnings(PMD.UnusedLocalVariable) Exception needs to be caught, but can't be used
      */
-    public function __construct(Thrift\Transport\TTransport $flumeTransport,
-                                ThriftFlumeEventServerClient $client,
-                                $level = Logger::DEBUG, $bubble = true)
+    public function __construct(
+        Thrift\Transport\TTransport $flumeTransport,
+        ThriftFlumeEventServerClient $client,
+        $level = Logger::DEBUG,
+        $bubble = true
+    )
     {
         $this->client = $client;
 
@@ -72,7 +58,7 @@ class ThriftFlumeProcessingHandler extends AbstractProcessingHandler implements 
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function isHandling(array $record)
     {
@@ -92,9 +78,7 @@ class ThriftFlumeProcessingHandler extends AbstractProcessingHandler implements 
     }
 
     /**
-     * Called on object destruction. We use this to close the flume connection
-     *
-     * @return void
+     * {@inheritDoc}
      */
     public function close()
     {
@@ -185,47 +169,4 @@ class ThriftFlumeProcessingHandler extends AbstractProcessingHandler implements 
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function isHandlingStopped()
-    {
-        return $this->handlingStopped;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function addWriteFilters(array $filters)
-    {
-        foreach ($filters as $filter) {
-            $this->addWriteFilter($filter);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function addWriteFilter(FilterInterface $filter)
-    {
-        $this->writeFilters[] = $filter;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function addHandlingFilters(array $filters)
-    {
-        foreach ($filters as $filter) {
-            $this->addHandlingFilter($filter);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function addHandlingFilter(FilterInterface $filter)
-    {
-        $this->handlingFilters[] = $filter;
-    }
 }

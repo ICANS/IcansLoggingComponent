@@ -26,7 +26,7 @@ class EmptyFilterTest extends \PHPUnit_Framework_TestCase
      */
     public function testFilterEmptyTrue(array $keys, array $record) {
         $emptyFilter = new EmptyFilter($keys);
-        $this->assertTrue($emptyFilter->isRecordToBeFiltered($record));
+        $this->assertTrue($emptyFilter->isRecordToBeHandled($record));
     }
 
     /**
@@ -35,7 +35,6 @@ class EmptyFilterTest extends \PHPUnit_Framework_TestCase
      */
     public function testFilterEmptyTrueDataProvider() {
         return array(
-            // Testlauf
             array(
                 array('fooKey'),
                 array('bar' => 'baz', 'fooKey' => ''),
@@ -53,7 +52,7 @@ class EmptyFilterTest extends \PHPUnit_Framework_TestCase
      */
     public function testFilterEmptyFalse(array $keys, array $record) {
         $emptyFilter = new EmptyFilter($keys);
-        $this->assertFalse($emptyFilter->isRecordToBeFiltered($record));
+        $this->assertFalse($emptyFilter->isRecordToBeHandled($record));
     }
 
     /**
@@ -62,7 +61,6 @@ class EmptyFilterTest extends \PHPUnit_Framework_TestCase
      */
     public function testFilterEmptyFalseDataProvider() {
         return array(
-            // Testlauf
             array(
                 array('fooKey'),
                 array('bar' => 'baz', 'fooKey' => new \DateTime),

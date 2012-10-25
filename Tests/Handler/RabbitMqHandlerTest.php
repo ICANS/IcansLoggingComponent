@@ -8,7 +8,7 @@
 namespace ICANS\Bundle\IcansLoggingBundle\Tests\Handler;
 
 use ICANS\Component\IcansLoggingComponent\Handler\RabbitMqHandler;
-use ICANS\Component\IcansLoggingComponent\AMQPMessageProducerInterface;
+use ICANS\Component\IcansLoggingComponent\Api\V1\AMQPMessageProducerInterface;
 
 use Monolog\Formatter\FormatterInterface;
 use Monolog\Logger;
@@ -50,7 +50,7 @@ class RabbitMqHandlerTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->messageProducerMock = $this->getMockBuilder(
-            'ICANS\Component\IcansLoggingComponent\AMQPMessageProducerInterface'
+            'ICANS\Component\IcansLoggingComponent\Api\V1\AMQPMessageProducerInterface'
         )->getMock();
 
         $this->formatterMock = $this->getMockBuilder('Monolog\Formatter\FormatterInterface')
