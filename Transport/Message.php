@@ -20,14 +20,14 @@ class Message extends AbstractTransportObject implements MessageInterface
      * @param string $pulseId
      * @param string $type
      * @param string $handle
-     * @param string $version
+     * @param int    $version
      */
     public function __construct($pulseId, $type, $handle, $version)
     {
         $this->setStringValue(self::PULSE_ID, $pulseId);
         $this->setStringValue(self::TYPE, $type);
         $this->setStringValue(self::HANDLE, $handle);
-        $this->setStringValue(self::VERSION, $version);
+        $this->setIntegerValue(self::VERSION, $version);
     }
 
     /**
@@ -49,11 +49,11 @@ class Message extends AbstractTransportObject implements MessageInterface
     }
 
     /**
-     * @param string $version
+     * @param int $version
      */
     public function setEnvelopeVersion($version)
     {
-        $this->setStringValue(self::ENVELOPE_VERSION, $version);
+        $this->setIntegerValue(self::ENVELOPE_VERSION, $version);
     }
 
     /**
