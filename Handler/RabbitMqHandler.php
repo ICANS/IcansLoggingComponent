@@ -79,7 +79,7 @@ class RabbitMqHandler extends AbstractHandler
         if (!empty($this->writeFilters)) {
             foreach ($this->writeFilters as $filter) {
                 if (true === $filter->isRecordToBeFiltered($record)) {
-                    $record = $filter->filterRecord();
+                    $record = $filter->filterRecord($record);
                 }
             }
         }
