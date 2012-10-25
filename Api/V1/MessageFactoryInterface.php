@@ -19,7 +19,7 @@ interface MessageFactoryInterface
     /**
      * @var string
      */
-    const ENVELOPE_VERSION = '2';
+    const ENVELOPE_VERSION = 2;
 
     /**
      * @todo Wolf Bauer, 20121023, can we reduce the loglevel information? We do not need the log level in RPS or
@@ -27,13 +27,13 @@ interface MessageFactoryInterface
      *
      * @param string $type
      * @param string $handle
-     * @param string $version
+     * @param int    $version
      * @param array  $body
      * @param string $originType
      * @param string $originServiceType
      * @param string $originServiceComponent
      * @param string $originServiceInstance
-     * @param int $logLevelValue
+     * @param int    $logLevelValue
      * @param string $logLevelName
      *
      * @return MessageInterface
@@ -57,13 +57,13 @@ interface MessageFactoryInterface
      *
      * @param string $type
      * @param string $handle
-     * @param string $version
+     * @param int    $version
      * @param array  $body
      * @param string $originType
      * @param string $originServiceType
      * @param string $originServiceComponent
      * @param string $originServiceInstance
-     * @param int $logLevelValue
+     * @param int    $logLevelValue
      * @param string $logLevelName
      * @param string $pulseId
      *
