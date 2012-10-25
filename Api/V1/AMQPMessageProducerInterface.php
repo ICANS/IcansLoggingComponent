@@ -7,7 +7,7 @@
  * @author    Mike Lohmann <mike.lohmann@icans-gmbh.com>
  * @copyright 2012 ICANS GmbH
  */
-namespace ICANS\Component\IcansLoggingComponent;
+namespace ICANS\Component\IcansLoggingComponent\Api\V1;
 
 /**
  * This class defines the interface needed for AMQPMessageProducers
