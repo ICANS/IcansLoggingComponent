@@ -10,6 +10,8 @@ namespace ICANS\Component\IcansLoggingComponent\Transport;
 use ICANS\Component\IcansLoggingComponent\Api\V1\MessageFactoryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+use Monolog\Logger;
+
 /**
  * Definition of the MessageFactory.
  */
