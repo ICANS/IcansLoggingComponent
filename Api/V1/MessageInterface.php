@@ -80,7 +80,7 @@ interface MessageInterface
     /**
      * Storage key for the message loglevel value property.
      */
-    const LOGLEVEL_VALUE = 'message_loglevel_value';
+    const LOGLEVEL_VALUE = 'level';
 
     /**
      * Storage key for the message loglevel property.
