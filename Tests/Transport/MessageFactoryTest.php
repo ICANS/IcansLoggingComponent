@@ -48,7 +48,7 @@ class MessageFactoryTest extends \PHPUnit_Framework_TestCase
         $actual = $this->object->createMessage(
             'message type',
             'message handle',
-            'message version',
+            1,
             array(
                  'Body item 1',
                  'Body item 2',
@@ -87,14 +87,15 @@ class MessageFactoryTest extends \PHPUnit_Framework_TestCase
         $expected = array(
             'event_type'               => 'message type',
             'event_handle'             => 'message handle',
-            'event_version'            => 'message version',
+            'event_version'            => 1,
             'origin_type'              => 'app',
-            'envelope_version'         => '2',
+            'envelope_version'         => 2,
             'origin_host' => gethostname(),
             'origin_service_type'      => 'origin service type',
             'origin_service_component' => 'origin service component',
             'origin_service_instance'  => 'origin service instance',
-            'message_loglevel_value'   => '1234',
+            'message_loglevel_value'   => 1234,
+            'level'   => 1234,
             'message_loglevel'         => 'log level name',
             'event_body'               => array(
                 'Body item 1',
@@ -115,7 +116,7 @@ class MessageFactoryTest extends \PHPUnit_Framework_TestCase
         $actual = $this->object->createMessageWithPulseId(
             'message type',
             'message handle',
-            'message version',
+            1,
             array(
                  'Body item 1',
                  'Body item 2',
@@ -148,14 +149,15 @@ class MessageFactoryTest extends \PHPUnit_Framework_TestCase
             'pulse'                   =>'pulse id',
             'event_type'              =>'message type',
             'event_handle'            =>'message handle',
-            'event_version'           =>'message version',
+            'event_version'           =>1,
             'origin_type'             =>'app',
-            'envelope_version'        =>'2',
+            'envelope_version'        =>2,
             'origin_host'             =>gethostname(),
             'origin_service_type'     =>'origin service type',
             'origin_service_component'=>'origin service component',
             'origin_service_instance' =>'origin service instance',
             'message_loglevel_value'  =>1234,
+            'level'   => 1234,
             'message_loglevel'        =>'log level name',
             'event_body'              =>array(
                 'Body item 1',
@@ -177,7 +179,7 @@ class MessageFactoryTest extends \PHPUnit_Framework_TestCase
         $actual = $this->object->createMessageWithPulseId(
             'message type',
             'message handle',
-            'message version',
+            1,
             array(
                  'Body item 1',
                  'Body item 2',
@@ -213,7 +215,7 @@ class MessageFactoryTest extends \PHPUnit_Framework_TestCase
         $actual = $this->object->createMessageWithPulseId(
             'message type',
             'message handle',
-            'message version',
+            1,
             array(
                  'Body item 1',
                  'Body item 2',
@@ -234,7 +236,7 @@ class MessageFactoryTest extends \PHPUnit_Framework_TestCase
         $rawData = $actual->getRawData();
 
         $this->assertInternalType('string', $rawData['origin_host']);
-        $this->assertSame('my-dummy-hostname', $rawData['origin_host']);
+        $this->assertSame(gethostname(), $rawData['origin_host']);
 
         $_SERVER['HTTP_HOST'] = $oldhost; // Reset to initial state
     }

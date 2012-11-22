@@ -100,10 +100,13 @@ class MessageFactory implements MessageFactoryInterface
         $message->setCreationTimeStampInMilliseconds($creationTimeInMilliSeconds);
         $message->setEnvelopeVersion(self::ENVELOPE_VERSION);
 
-        if (isset($_SERVER['HTTP_HOST'])) {
+        $hostname = gethostname();
+        if ($hostname !== FALSE) {
+            $message->setOriginHost($hostname);
+        } elseif (isset($_SERVER['HTTP_HOST'])) {
             $message->setOriginHost($_SERVER['HTTP_HOST']);
         } else {
-            $message->setOriginHost(gethostname());
+            $message->setOriginHost('hostname_not_available');
         }
 
         $message->setOriginType($originType);

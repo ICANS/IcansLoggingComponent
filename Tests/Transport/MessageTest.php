@@ -99,7 +99,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetEnvelopeVersion()
     {
-        $envelopeVersion = '12345';
+        $envelopeVersion = 12345;
         $this->object->setEnvelopeVersion($envelopeVersion);
         $actual = $this->object->getRawData();
         $this->assertArrayHasKey('envelope_version', $actual);
