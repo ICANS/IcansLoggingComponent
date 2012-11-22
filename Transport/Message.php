@@ -88,6 +88,7 @@ class Message extends AbstractTransportObject implements MessageInterface
     {
         $this->setIntegerValue(self::LOGLEVEL_VALUE, $logLevelValue);
         $this->setStringValue(self::LOGLEVEL, $logLevelName);
+        $this->setIntegerValue(self::PROPRIATE_LOGLEVEL_VALUE, $logLevelValue);
     }
 
     /**
