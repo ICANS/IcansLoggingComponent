@@ -88,11 +88,6 @@ interface MessageInterface
     const PROPRIATE_LOGLEVEL_VALUE = 'level';    
 
     /**
-     * Propriate loglevel name.
-     */
-    const PROPRIATE_LOGLEVEL_VALUE = 'level';
-
-    /**
      * Storage key for the message loglevel property.
      */
     const LOGLEVEL = 'message_loglevel';
