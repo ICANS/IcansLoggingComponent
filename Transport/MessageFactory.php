@@ -93,11 +93,9 @@ class MessageFactory implements MessageFactoryInterface
             $pulseId = $this->generatePulseId();
         }
 
-        $creationTimeInMilliSeconds = round(microtime(true) * 1000);
-
         $message = new Message($pulseId, $type, $handle, $version);
 
-        $message->setCreationTimeStampInMilliseconds($creationTimeInMilliSeconds);
+        $message->setCreationTimeStampInMilliseconds(new MilliSecondDateTime());
         $message->setEnvelopeVersion(self::ENVELOPE_VERSION);
 
         $hostname = gethostname();
