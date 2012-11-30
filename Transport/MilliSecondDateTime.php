@@ -18,7 +18,7 @@ class MilliSecondDateTime extends Datetime
     /**
      * @var int
      */
-    private $millisecond;
+    private $millisecond = 0;
 
     /**
      * @var int
@@ -36,7 +36,7 @@ class MilliSecondDateTime extends Datetime
         }
 
         if (is_null($time)) {
-            $time = '@' . microtime(true);
+            $time = microtime();
         }
 
         if (is_null($timeZone)) {
@@ -44,17 +44,29 @@ class MilliSecondDateTime extends Datetime
         }
 
         if (preg_match('/@(\\d+)\\.(\\d+)/', $time, $matches)) {
-            // store milliseconds with precision 3
+            // store milliseconds with precision 3 and add some zeros to get 8 decimal places
             $this->millisecond = (int) $matches[2];
             $this->millisecond = round($this->millisecond / 10);
             // store timestamp in milliseconds
-            $calculationTime = str_replace('@', '', $time);
+            $calculationTime               = str_replace('@', '', $time);
             $this->timeStampInMilliseconds = round($calculationTime * 1000);
-            parent::__construct('@' . $matches[1], $timeZone);
-        } else {
-            $this->millisecond = 0;
-            parent::__construct($time, $timeZone);
+
+            // set time to simple timestamp
+            $time = '@' . $matches[1];
+        } elseif (preg_match('/(\\d+)\\ (\\d+)/', $time, $matches)) {
+            // store millisecond part
+            $this->millisecond             = substr($matches[1], 0, 8);
+            $millisecondsShort             = (int) substr($this->millisecond, 0, 4);
+            // set milliseconds timestamp part
+            $this->timeStampInMilliseconds = round($millisecondsShort / 10);
+            // add normal timestamp
+            $this->timeStampInMilliseconds += $matches[2] * 1000;
+
+            // set time to simple timestamp
+            $time = '@' . $matches[2];
         }
+
+        parent::__construct($time, $timeZone);
     }
 
     /**
@@ -62,7 +74,7 @@ class MilliSecondDateTime extends Datetime
      */
     public function getDateStringWithMilliseconds()
     {
-        return $this->format('Y-m-d\TH:i:s') . '.' . $this->millisecond;
+        return $this->format('Y-m-d\TH:i:s') . '.' . $this->millisecond . $this->format('O');
     }
 
     /**
@@ -73,6 +85,7 @@ class MilliSecondDateTime extends Datetime
         if (!empty($this->millisecond)) {
             return $this->timeStampInMilliseconds;
         }
-        return parent::getTimestamp() + '000';
+
+        return parent::getTimestamp() + '00000000';
     }
 }
