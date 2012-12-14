@@ -37,8 +37,8 @@ class RabbitMqHandler extends AbstractHandler
      * Default constructor
      *
      * @param string $routingKey
-     * @param int $level The minimum logging level at which this handler will be triggered
-     * @param bool $bubble Whether the messages that are handled can bubble up the stack or not
+     * @param int    $level The minimum logging level at which this handler will be triggered
+     * @param bool   $bubble Whether the messages that are handled can bubble up the stack or not
      */
     public function __construct(
         $routingKey,
@@ -53,8 +53,8 @@ class RabbitMqHandler extends AbstractHandler
     /**
      * Add additional properties for the publish action.
      *
-     * @param $propertyKey
-     * @param $property
+     * @param string $propertyKey
+     * @param string $property
      */
     public function addAdditionalProperty($propertyKey, $property)
     {
@@ -69,60 +69,6 @@ class RabbitMqHandler extends AbstractHandler
     public function addAdditionalProperties(array $properties)
     {
         $this->additionalProperties = $properties;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected function write(array $record)
-    {
-        if (!empty($this->writeFilters)) {
-            foreach ($this->writeFilters as $filter) {
-                if (true === $filter->isRecordToBeFiltered($record)) {
-                    $record = $filter->filterRecord($record);
-                }
-            }
-        }
-
-        $this->bubble = true;
-        $producer = $this->getEventMessageProducer();
-
-        if (null !== $producer) {
-            try {
-                $producer->publish(
-                    json_encode($record),
-                    $this->routingKey,
-                    $this->additionalProperties
-                );
-                $this->bubble = false; // = the record was successfully consumed
-            } catch (\Exception $e) {
-                $this->bubble = true; // = the record was NOT successfully consumed
-            }
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function isHandling(array $record)
-    {
-        if (true === $this->isHandlingStopped()) {
-            return false;
-        }
-
-        if (null === $this->getEventMessageProducer()) {
-            return false;
-        }
-
-        if (!empty($this->handlingFilters)) {
-            foreach ($this->handlingFilters as $filter) {
-                if (true === $filter->isRecordToBeHandled($record)) {
-                    return false;
-                }
-            }
-        }
-
-        return parent::isHandling($record);
     }
 
     /**
@@ -151,5 +97,35 @@ class RabbitMqHandler extends AbstractHandler
     public function getEventMessageProducer()
     {
         return $this->eventMessageProducer;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function handleWrite(array $record)
+    {
+        $this->bubble = true;
+        $producer = $this->getEventMessageProducer();
+
+        if (null !== $producer) {
+            try {
+                $producer->publish(
+                    json_encode($record),
+                    $this->routingKey,
+                    $this->additionalProperties
+                );
+                $this->bubble = false; // = the record was successfully consumed
+            } catch (\Exception $e) {
+                $this->bubble = true; // = the record was NOT successfully consumed
+            }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function checkIsHandling(array $record)
+    {
+        return null !== $this->getEventMessageProducer();
     }
 }

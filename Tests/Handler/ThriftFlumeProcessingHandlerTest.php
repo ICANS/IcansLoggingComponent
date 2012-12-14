@@ -16,6 +16,7 @@ use ICANS\Component\IcansLoggingComponent\Handler\ThriftFlumeProcessingHandler;
 use Monolog\Logger;
 
 use Thrift AS Thrift;
+use ReflectionMethod;
 
 /**
  * Test for the monolog handler for the flume connection
@@ -151,10 +152,14 @@ class ThriftFlumeProcessingHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function testWriteWrongParameter()
     {
-        $thriftFlumeProcessingHandler = new ThriftFlumeProcessingHandler($this->thriftTTransportMock,
-            $this->flumeClientMock);
+        $thriftFlumeProcessingHandler = new ThriftFlumeProcessingHandler(
+            $this->thriftTTransportMock,
+            $this->flumeClientMock
+        );
 
-        $thriftFlumeProcessingHandler->write('test');
+        $method = new ReflectionMethod($thriftFlumeProcessingHandler, 'write');
+        $method->setAccessible(true);
+        $method->invoke($thriftFlumeProcessingHandler, 'test');
     }
 
     /**
@@ -166,10 +171,14 @@ class ThriftFlumeProcessingHandlerTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('append');
 
-        $thriftFlumeProcessingHandler = new ThriftFlumeProcessingHandler($this->thriftTTransportMock,
-            $this->flumeClientMock);
+        $thriftFlumeProcessingHandler = new ThriftFlumeProcessingHandler(
+            $this->thriftTTransportMock,
+            $this->flumeClientMock
+        );
 
-        $thriftFlumeProcessingHandler->write(array('test'));
+        $method = new ReflectionMethod($thriftFlumeProcessingHandler, 'write');
+        $method->setAccessible(true);
+        $method->invoke($thriftFlumeProcessingHandler, array('test'));
     }
 
     /**

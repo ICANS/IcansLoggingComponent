@@ -60,26 +60,6 @@ class ThriftFlumeProcessingHandler extends AbstractHandler
     /**
      * {@inheritDoc}
      */
-    public function isHandling(array $record)
-    {
-        if (true === $this->isHandlingStopped()) {
-            return false;
-        }
-
-        if (!empty($this->handlingFilters)) {
-            foreach ($this->handlingFilters as $filter) {
-                if (true === $filter->isRecordToBeHandled($record)) {
-                    return false;
-                }
-            }
-        }
-
-        return parent::isHandling($record);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function close()
     {
         if (!empty($this->client)) {
@@ -95,7 +75,6 @@ class ThriftFlumeProcessingHandler extends AbstractHandler
             }
         }
     }
-
 
     /**
      * Matches the Monolog loglevel to the corresponding flume equivalent. Can be used to set
@@ -141,23 +120,6 @@ class ThriftFlumeProcessingHandler extends AbstractHandler
     }
 
     /**
-     * {@inheritDoc}
-     */
-    public function write(array $record)
-    {
-        if (!empty($this->writeFilters)) {
-            foreach ($this->writeFilters as $filter) {
-                if (true === $filter->isRecordToBeFiltered($record)) {
-                    $record = $filter->filterRecord();
-                }
-            }
-        }
-
-        $event = new ThriftFlumeEvent($record);
-        $this->sendThriftFlumeEvent($event);
-    }
-
-    /**
      * sends the event (and its data) to the flume node
      *
      * @param ThriftFlumeEvent $event
@@ -169,4 +131,20 @@ class ThriftFlumeProcessingHandler extends AbstractHandler
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    protected function handleWrite(array $record)
+    {
+        $event = new ThriftFlumeEvent($record);
+        $this->sendThriftFlumeEvent($event);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function checkIsHandling(array $record)
+    {
+        return true;
+    }
 }
