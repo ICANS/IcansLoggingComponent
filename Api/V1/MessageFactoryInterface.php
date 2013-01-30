@@ -67,6 +67,8 @@ interface MessageFactoryInterface
      * @param string $logLevelName
      * @param string $pulseId
      *
+     * @throws \Exception
+     *
      * @return MessageInterface
      */
     public function createMessageWithPulseId(
@@ -91,4 +93,5 @@ interface MessageFactoryInterface
      * @return string
      */
     public function generatePulseId();
+
 }
