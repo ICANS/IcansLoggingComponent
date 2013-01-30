@@ -81,6 +81,12 @@ interface MessageInterface
      * Storage key for the message loglevel value property.
      */
     const LOGLEVEL_VALUE = 'message_loglevel_value';
+    
+    /**
+     * Propriate loglevel name.
+     */
+    const PROPRIATE_LOGLEVEL_VALUE = 'level';    
+
 
     /**
      * Storage key for the message loglevel property.
@@ -92,3 +98,4 @@ interface MessageInterface
      */
     public function getRawData();
 }
+
