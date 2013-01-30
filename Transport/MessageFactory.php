@@ -8,6 +8,7 @@
 namespace ICANS\Component\IcansLoggingComponent\Transport;
 
 use ICANS\Component\IcansLoggingComponent\Api\V1\MessageFactoryInterface;
+use ICANS\Component\IcansLoggingComponent\Api\V1\PulseIdGeneratorInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Monolog\Logger;
@@ -23,16 +24,18 @@ class MessageFactory implements MessageFactoryInterface
     private $pulseId = null;
 
     /**
-     * @var string
+     * @var PulseIdGeneratorInterface
      */
-    private $pulseIdPrefix;
+    private $pulseIdGenerator;
 
     /**
-     * @param string $pulseIdPrefix
+     * Default constructor
+     *
+     * @param PulseIdGeneratorInterface $pulseIdGenerator
      */
-    public function __construct($pulseIdPrefix)
+    public function __construct(PulseIdGeneratorInterface $pulseIdGenerator)
     {
-        $this->pulseIdPrefix = $pulseIdPrefix;
+        $this->pulseIdGenerator = $pulseIdGenerator;
     }
 
     /**
@@ -93,11 +96,9 @@ class MessageFactory implements MessageFactoryInterface
             $pulseId = $this->generatePulseId();
         }
 
-        $creationTimeInMilliSeconds = round(microtime(true) * 1000);
-
         $message = new Message($pulseId, $type, $handle, $version);
 
-        $message->setCreationTimeStampInMilliseconds($creationTimeInMilliSeconds);
+        $message->setCreationTimeStampInMilliseconds(new MilliSecondDateTime());
         $message->setEnvelopeVersion(self::ENVELOPE_VERSION);
 
         $hostname = gethostname();
@@ -126,6 +127,6 @@ class MessageFactory implements MessageFactoryInterface
      */
     public function generatePulseId()
     {
-        return $this->pulseIdPrefix . uniqid();
+        return $this->pulseIdGenerator->generatePulseId();
     }
 }

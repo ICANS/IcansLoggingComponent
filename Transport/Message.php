@@ -39,13 +39,12 @@ class Message extends AbstractTransportObject implements MessageInterface
     }
 
     /**
-     * @param int $creationTimeInMilliSeconds
+     * @param MilliSecondDateTime $creationDateTime
      */
-    public function setCreationTimeStampInMilliseconds($creationTimeInMilliSeconds)
+    public function setCreationTimeStampInMilliseconds(MilliSecondDateTime $creationDateTime)
     {
-        $this->setDoubleValue(self::CREATED_TIMESTAMP, $creationTimeInMilliSeconds);
-        $creationDate = date(sprintf('Y-m-d\TH:i:s.%sO', substr($creationTimeInMilliSeconds, 1, 8)));
-        $this->setStringValue(self::CREATED_DATE, $creationDate);
+        $this->setDoubleValue(self::CREATED_TIMESTAMP, $creationDateTime->getTimestampInMilliseconds());
+        $this->setStringValue(self::CREATED_DATE, $creationDateTime->getDateStringWithMilliseconds());
     }
 
     /**

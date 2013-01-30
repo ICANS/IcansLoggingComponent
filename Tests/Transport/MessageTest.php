@@ -87,7 +87,16 @@ class MessageTest extends \PHPUnit_Framework_TestCase
     public function testSetCreationTimeStampInMilliseconds()
     {
         $milliseconds = 1351072471234;
-        $this->object->setCreationTimeStampInMilliseconds($milliseconds);
+        $milliDate = $this->getMock('ICANS\Component\IcansLoggingComponent\Transport\MilliSecondDateTime');
+        
+        $milliDate->expects($this->once())
+            ->method('getTimestampInMilliseconds')
+            ->will($this->returnValue($milliseconds));
+        $milliDate->expects($this->once())
+            ->method('getDateStringWithMilliseconds')
+            ->will($this->returnValue('foobar'));
+        
+        $this->object->setCreationTimeStampInMilliseconds($milliDate);
         $actual = $this->object->getRawData();
         $this->assertArrayHasKey('created_timestamp', $actual);
         $this->assertEquals($milliseconds, $actual['created_timestamp']);
