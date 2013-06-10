@@ -14,7 +14,7 @@
         "monolog/monolog":                      "1.*"
     },
     "require-dev": {
-        "symfony/class-loader":                 "2.0.*"
+        "symfony/class-loader":                 ">=2.0,<3.0"
     },
     "target-dir": "ICANS/Component/IcansLoggingComponent",
     "autoload": {
