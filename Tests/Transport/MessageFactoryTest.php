@@ -18,9 +18,9 @@ class MessageFactoryTest extends \PHPUnit_Framework_TestCase
     private $object;
 
     /**
-     * @var string
+     * @var \PHPUnit_Framework_MockObject_MockObject
      */
-    private $pulsePrefix = 'prefix';
+    private $pulseIdGeneratorMock;
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -28,15 +28,9 @@ class MessageFactoryTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new MessageFactory($this->pulsePrefix);
-    }
-
-    /**
-     * Tears down the fixture, for example, closes a network connection.
-     * This method is called after a test is executed.
-     */
-    protected function tearDown()
-    {
+        $this->pulseIdGeneratorMock = $this->getMockBuilder(
+            'ICANS\Component\IcansLoggingComponent\Api\V1\PulseIdGeneratorInterface')->getMock();
+        $this->object = new MessageFactory($this->pulseIdGeneratorMock);
     }
 
     /**
@@ -45,6 +39,12 @@ class MessageFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateMessage()
     {
+        $pulseId = '1b2c3d4e';
+        $this->pulseIdGeneratorMock
+            ->expects($this->once())
+            ->method('generatePulseId')
+            ->will($this->returnValue($pulseId));
+
         $actual = $this->object->createMessage(
             'message type',
             'message handle',
@@ -112,7 +112,6 @@ class MessageFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateMessageWithPulseId()
     {
-
         $actual = $this->object->createMessageWithPulseId(
             'message type',
             'message handle',
@@ -175,6 +174,12 @@ class MessageFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateMessageWithPulseIdWithPassingNullAsPulseId()
     {
+        // we expect the generator is called to generate a pulseId if there is passed none
+        $pulseId = '1b2c3d4e';
+        $this->pulseIdGeneratorMock
+            ->expects($this->once())
+            ->method('generatePulseId')
+            ->will($this->returnValue($pulseId));
 
         $actual = $this->object->createMessageWithPulseId(
             'message type',
@@ -240,5 +245,4 @@ class MessageFactoryTest extends \PHPUnit_Framework_TestCase
 
         $_SERVER['HTTP_HOST'] = $oldhost; // Reset to initial state
     }
-
 }

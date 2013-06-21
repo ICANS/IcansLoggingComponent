@@ -109,8 +109,17 @@ class RabbitMqHandler extends AbstractHandler
 
         if (null !== $producer) {
             try {
+                // Check the given record for wrong encoding
+                // see doclbock of private function recursiveFixencoding
+                $encodedRecord = json_encode($record);
+
+                if (json_last_error() == JSON_ERROR_UTF8) {
+                    $jsonProofRecord = $this->recursiveFixEncoding($record);
+                    $encodedRecord = json_encode($jsonProofRecord);
+                }
+
                 $producer->publish(
-                    json_encode($record),
+                    $encodedRecord,
                     $this->routingKey,
                     $this->additionalProperties
                 );
@@ -127,5 +136,38 @@ class RabbitMqHandler extends AbstractHandler
     protected function checkIsHandling(array $record)
     {
         return null !== $this->getEventMessageProducer();
+    }
+
+    /**
+     * recursive function which checks the keys and values of an array for invalid utf-8 sequences as they may
+     * produce errors when doing json_encode on them
+     * @todo this should be done somewhere else - the best way would be to inject a smart serializer here
+     *
+     * @param array $array
+     * @return array
+     */
+    private function recursiveFixEncoding(array $array) {
+        if (!is_array($array)) {
+            return $array;
+        }
+        $result = array();
+        foreach ($array as $key => $value) {
+
+            $validUtf = mb_check_encoding($key, 'UTF-8');
+            if (!$validUtf) {
+                $key = mb_convert_encoding($key, 'UTF-8');
+            }
+
+            if (is_array($value)) {
+                $result[$key] = $this->recursiveFixEncoding($value);
+            } else {
+                $validUtf = mb_check_encoding($value, 'UTF-8');
+                if (!$validUtf) {
+                    $value = mb_convert_encoding($value, 'UTF-8');
+                }
+                $result[$key] = $value;
+            }
+        }
+        return $result;
     }
 }
