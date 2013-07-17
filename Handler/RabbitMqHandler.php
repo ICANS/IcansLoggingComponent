@@ -111,7 +111,7 @@ class RabbitMqHandler extends AbstractHandler
             try {
                 // Check the given record for wrong encoding
                 // see doclbock of private function recursiveFixencoding
-                $encodedRecord = json_encode($record);
+                $encodedRecord = @json_encode($record);
 
                 if (json_last_error() == JSON_ERROR_UTF8) {
                     $jsonProofRecord = $this->recursiveFixEncoding($record);
